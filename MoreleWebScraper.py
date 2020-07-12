@@ -1,6 +1,8 @@
-# Web scraping program for morele.net site
-# The code was made for prices and for apple phones, but can be easy modified
-
+"""
+@author: Marcin Fortuna
+@usage: web scraping for morele.net site
+more info in readme file
+"""
 
 from urllib.request import urlopen as uReq
 from urllib.request import Request
