@@ -1,13 +1,12 @@
 """
 @author: Marcin Fortuna
 @usage: web scraping for morele.net site
-more info in readme file
+more info in readme
 """
 
 from urllib.request import urlopen as uReq
 from urllib.request import Request
 from bs4 import BeautifulSoup as soup
-
 
 # links to all pages
 links = ['https://www.morele.net/telefony/telefony-smartfony-krotkofalowki/smartfony-280/,,,,,,,,0,,,,/1/?q=iphone',
