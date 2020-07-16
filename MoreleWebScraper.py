@@ -9,28 +9,6 @@ from urllib.request import Request
 from bs4 import BeautifulSoup as soup
 
 
-# I wanted price in format XX.XX not XX,XX so i wrote small function for that purpose
-def price_formating(value):
-    price_list = value.text.split()
-    x = price_list[0] + price_list[1]
-    finalprice = []
-    for i in x:
-        if i == ",":
-            finalprice.append(".")
-            continue
-        finalprice.append(i)
-    return "".join(finalprice)
-
-
-# I wanted diagonal in format X.X not X.X"
-def diagonal_formating(value):
-    finaldiagonal = []
-    for i in range(0, (len(value) - 1)):
-        finaldiagonal.append(value[i])
-
-    return "".join(finaldiagonal)
-
-
 # links to all pages
 links = ['https://www.morele.net/telefony/telefony-smartfony-krotkofalowki/smartfony-280/,,,,,,,,0,,,,/1/?q=iphone',
          'https://www.morele.net/telefony/telefony-smartfony-krotkofalowki/smartfony-280/,,,,,,,,0,,,,/2/?q=iphone',
@@ -40,7 +18,7 @@ links = ['https://www.morele.net/telefony/telefony-smartfony-krotkofalowki/smart
          'https://www.morele.net/telefony/telefony-smartfony-krotkofalowki/smartfony-280/,,,,,,,,0,,,,/6/?q=iphone]', ]
 
 # making CSV doc
-filename = "iphonesall.csv"  # name of the file
+filename = "iphoneraw.csv"  # name of the file
 f = open(filename, "w")
 # headers for each column
 headers = "product_name, price(PLN), camera(Mpix), ram(GB), storage(GB), diagonal(inch), waterproof\n"
@@ -68,7 +46,7 @@ for link in links:
 
         # price
         price_raw = container.find("div", {"class": "price-new"})
-        price = price_formating(price_raw)
+        price = price_raw.text
 
         # features contains lots of features below
         features = container.findAll("div", {"cat-product-feature"})
@@ -87,16 +65,15 @@ for link in links:
 
         # screen diagonal
         temp_diagonal = features[3].text.split()
-        diagonal_raw = temp_diagonal[2]
-        diagonal = diagonal_formating(str(diagonal_raw))
+        diagonal = temp_diagonal[2]
 
         # IP rating
         temp_waterproof = features[4].text.split()
         waterproof = temp_waterproof[1]
 
         # adding row with phone features
-        f.write(name + "," + price + "," + camera + "," + ram + "," + storage + "," + diagonal + "," + waterproof +
-                "\n")
+        f.write(name + "," + price.replace(',', '.') + "," + camera + "," + ram + "," + storage + "," + diagonal +
+                "," + waterproof + "\n")
 
 # closing doc to check the doc in folder
 f.close()
